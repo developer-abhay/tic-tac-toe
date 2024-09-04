@@ -1,3 +1,5 @@
+import "./style.css";
+
 const boxes = document.querySelectorAll(".box");
 let player = "O";
 let gridArr = Array(9).fill("");
@@ -25,7 +27,7 @@ const calculateWin = () => {
     (gridArr[0] && gridArr[0] == gridArr[4] && gridArr[4] == gridArr[8]) ||
     (gridArr[2] && gridArr[2] == gridArr[4] && gridArr[4] == gridArr[6])
   ) {
-    winner = player == "O" ? 2 : 1;
+    const winner = player == "O" ? 2 : 1;
     alert(`Player ${winner} won`);
     reset();
   }
