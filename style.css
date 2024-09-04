@@ -56,8 +56,11 @@ main {
   cursor: default;
 }
 
-.player1,
-.player2 {
-  font-size: 24px;
+.player {
+  font-size: 54px;
   color: #fff;
+  text-align: center;
+}
+.player h1 {
+  font-size: 62px;
 }
