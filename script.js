@@ -1,87 +1,54 @@
 const boxes = document.querySelectorAll(".box");
-let count = 0;
+let player = "O";
+let gridArr = Array(9).fill("");
 
-let gridArr = [
-  ["", "", ""],
-  ["", "", ""],
-  ["", "", ""],
-];
-
-let flatArray = gridArr.flat();
-
-// Mark and winning function
+// Mark
 const mark = (e) => {
   if (!e.target.innerHTML) {
     const position = e.target.dataset.index;
-    if (count % 2 == 0) {
-      flatArray[position] = "O";
-      gridArr = reNestArray(flatArray, 3);
-    } else {
-      flatArray[position] = "X";
-      gridArr = reNestArray(flatArray, 3);
-    }
-    count++;
-    renderGrid();
-    setTimeout(calculateWin, 0);
+    player == "O" ? (gridArr[position] = "O") : (gridArr[position] = "X");
+    e.target.innerHTML = gridArr[position];
+    player = player == "O" ? "X" : "O";
+    setTimeout(calculateWin, 100);
   }
-};
-
-// Render ]
-const renderGrid = () => {
-  boxes.forEach((box, index) => {
-    box.innerHTML = flatArray[index];
-  });
 };
 
 // Calculate Win
 const calculateWin = () => {
-  for (let i = 0; i < 3; i++) {
-    if (
-      (gridArr[i][1] != "" &&
-        gridArr[i][0] == gridArr[i][1] &&
-        gridArr[i][1] == gridArr[i][2]) ||
-      (gridArr[0][i] != "" &&
-        gridArr[0][i] == gridArr[1][i] &&
-        gridArr[1][i] == gridArr[2][i])
-    ) {
-      gridArr = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""],
-      ];
-      flatArray = gridArr.flat();
-
-      alert("Game Ended");
-    }
+  if (
+    (gridArr[0] && gridArr[0] == gridArr[1] && gridArr[1] == gridArr[2]) ||
+    (gridArr[3] && gridArr[3] == gridArr[4] && gridArr[4] == gridArr[5]) ||
+    (gridArr[6] && gridArr[6] == gridArr[7] && gridArr[7] == gridArr[8]) ||
+    (gridArr[0] && gridArr[0] == gridArr[3] && gridArr[3] == gridArr[6]) ||
+    (gridArr[1] && gridArr[1] == gridArr[4] && gridArr[4] == gridArr[7]) ||
+    (gridArr[2] && gridArr[2] == gridArr[5] && gridArr[5] == gridArr[8]) ||
+    (gridArr[0] && gridArr[0] == gridArr[4] && gridArr[4] == gridArr[8]) ||
+    (gridArr[2] && gridArr[2] == gridArr[4] && gridArr[4] == gridArr[6])
+  ) {
+    winner = player == "O" ? 2 : 1;
+    alert(`Player ${winner} won`);
+    reset();
   }
 };
 
-function reNestArray(flatArray, chunkSize) {
-  const finalArr = [];
-  flatArray.reduce((acc, _, i) => {
-    if (i % chunkSize === 0 && acc.length > 0) {
-      finalArr.push(acc);
-      acc = [];
-      acc.push(_);
-    } else if (i == 8) {
-      acc.push(_);
-      finalArr.push(acc);
-    } else {
-      acc.push(_);
-    }
-    // if (i % chunkSize === 0) acc.push(flatArray.slice(i, i + chunkSize));
-    return acc;
-  }, []);
-  return finalArr;
-}
+//Reset Grid
+const reset = () => {
+  player = "O";
+  gridArr = Array(9).fill("");
+  boxes.forEach((box, index) => {
+    box.innerHTML = gridArr[index];
+  });
+};
 
 // Event listeners
 boxes.forEach((box) => {
   box.addEventListener("mouseover", (e) => {
     if (e.target.innerHTML) {
-      box.style.cursor = "default";
-      box.style.backgroundColor = "#34495e";
+      box.classList.add("hover");
     }
+  });
+  box.addEventListener("mouseout", (e) => {
+    box.classList.remove("hover");
   });
   box.addEventListener("click", mark);
 });

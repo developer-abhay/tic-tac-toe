@@ -41,6 +41,10 @@ main {
   background-color: #202d39;
   cursor: pointer;
 }
+.box.hover {
+  background-color: #34495e;
+  cursor: default;
+}
 
 .player1,
 .player2 {
